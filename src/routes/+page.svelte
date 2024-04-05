@@ -1,4 +1,6 @@
 <script>
+// @ts-nocheck
+
 	/** @type {string} */
 	let text_to_be_translated = '';
 	/** @type {string} */
