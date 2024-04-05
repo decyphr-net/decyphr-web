@@ -9,6 +9,7 @@
 	</ul>
 	<ul>
 		<li><a href="/">Text Processing</a></li>
+		<li><a href="/preferences">Preferences</a></li>
 	</ul>
 </nav>
 <slot />
