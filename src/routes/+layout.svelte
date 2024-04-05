@@ -5,12 +5,10 @@
 
 <nav>
 	<ul>
-		<li><strong>Decyphr</strong></li>
+		<li><a href="/"><strong>Decyphr</strong></a></li>
 	</ul>
 	<ul>
-		<li><a href="#">About</a></li>
-		<li><a href="#">Services</a></li>
-		<li><a href="#">Products</a></li>
+		<li><a href="/">Text Processing</a></li>
 	</ul>
 </nav>
 <slot />

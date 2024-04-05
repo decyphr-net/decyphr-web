@@ -14,8 +14,8 @@
 
 	let processedText = '';
 
-	const translateEndpoint = 'http://127.0.0.1:8000/translate/';
-	const nlpEndpoint = 'http://127.0.0.1:8000/nlp/'
+	const translateEndpoint = `${import.meta.env.VITE_BASE_URL}translate/`;
+	const nlpEndpoint = `${import.meta.env.VITE_BASE_URL}nlp/`;
 
 	let handleSubmit = () => {
 		let data = {
@@ -52,7 +52,6 @@
 				headers: new Headers({'content-type': 'application/json'})
 			}
 		).then(response => response.json()).then(data => {
-			console.log(data)
 			processedText = data
 		})
 	}
