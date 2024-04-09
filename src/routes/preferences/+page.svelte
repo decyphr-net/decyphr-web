@@ -2,13 +2,17 @@
   import { onMount } from "svelte";
 
   let languages = [];
+  let preferences = { };
   let translator = 'google';
   let processor = 'google';
   let source_language = '';
   let target_language = '';
 
+  const preferencesEndpoint = `${import.meta.env.VITE_BASE_URL}preferences/`
+
   onMount(() => {
-    let languagesEndpoint = `${import.meta.env.VITE_BASE_URL}languages/`
+    const languagesEndpoint = `${import.meta.env.VITE_BASE_URL}languages/`
+    
     fetch(
 			languagesEndpoint, 
 			{
@@ -18,7 +22,42 @@
 		).then(response => response.json()).then(data => {
 			languages = data
 		})
+
+    fetch(
+      preferencesEndpoint,
+      {
+				method: 'GET', 
+				headers: new Headers({'content-type': 'application/json'})
+			}
+    ).then(response => response.json()).then(data => {
+      preferences = data;
+
+      translator = preferences.translator;
+      processor = preferences.processor;
+      source_language = preferences.source_lang;
+      target_language = preferences.target_lang;
+    })
   })
+
+  let updatePreferences = () => {
+    let data = {
+      "translator": translator,
+      "processor": processor,
+      "source_lang": source_language,
+      "target_lang": target_language
+    }
+
+    fetch(
+      `${preferencesEndpoint + preferences.id}/`,
+      {
+        method: 'PATCH',
+        body: JSON.stringify(data),
+        headers: new Headers({'content-type': 'application/json'})
+      }
+    ).then(response => response.json()).then(data => {
+      preferences = data
+    });
+  }
 
 </script>
 
@@ -31,17 +70,17 @@
 
   <div class="body-spacer-1"></div>
   <div class="body-content">
-    <form>
+    <form on:submit|preventDefault={updatePreferences}>
       <select name="source_language" bind:value={source_language}>
         <option value="" disabled selected>Choose your native language</option>
         {#each languages as language, index}
-          <option value="{language.code}">{language.name}</option>
+          <option value="{language.id}">{language.name}</option>
         {/each}
 			</select>
       <select name="target_language" bind:value={target_language}>
         <option value="" disabled selected>Choose the language that you are learning</option>
 				{#each languages as language, index}
-          <option value="{language.code}">{language.name}</option>
+          <option value="{language.id}">{language.name}</option>
         {/each}
 			</select>
       <select name="translator" bind:value={translator}>
